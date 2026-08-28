@@ -1,10 +1,11 @@
-import {Button} from "@/components/ui/button";
-// import Hero from "./landing/Hero";
+import Header from "@/components/landing/Header";
+import Hero from "@/components/landing/Hero";
 
 export default function Home(){
   return(
     <>
-    <main className="h-screen flex justify-center items-center bg-slate-800">
+    <main className="h-screen flex flex-col bg-[#fefefe]">
+      <Header />
       <Hero />
     </main>
     </>
