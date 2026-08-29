@@ -2,24 +2,57 @@ import { Button } from "@/components/ui/button";
 
 export default function Hero() {
     return (
-        <section className="grid min-h-[calc(100vh-4.5rem)] grid-cols-1 items-center gap-8 px-8 py-12 md:grid-cols-2 md:px-16">
-            <div>
-                <h1 className="max-w-xl text-5xl font-bold tracking-tight text-slate-950 md:text-7xl">
-                    Build Better Products
-                </h1>
-                <h3 className="mt-6 max-w-lg text-wrap text-lg text-slate-600">
-                    Create modern applications faster using our platform.
-                </h3>
-                <Button className="mt-8">Get Started</Button>
-            </div>
+        <div className="min-h-screen flex px-8">
 
-            <div className="relative h-64 w-full overflow-hidden rounded-lg md:h-96">
+            {/* Left side */}
+            <section className="w-1/2 flex flex-col justify-center gap-8 px-16">
+
+                {/* List */}
+                <ul className="flex items-center gap-6 list-none text-sm">
+                    <li className="flex items-center">
+                        <span className="w-1.5 h-1.5 bg-zinc-500 rounded-full mr-2"></span>
+                        PLAN
+                    </li>
+
+                    <li className="flex items-center">
+                        <span className="w-1.5 h-1.5 bg-zinc-500 rounded-full mr-2"></span>
+                        COLLABORATE
+                    </li>
+
+                    <li className="flex items-center">
+                        <span className="w-1.5 h-1.5 bg-zinc-500 rounded-full mr-2"></span>
+                        ACHIEVE
+                    </li>
+                </ul>
+
+                {/* Heading */}
+                <h1 className="font-extrabold text-6xl leading-tight">
+                    Turn your ideas into
+                    <span className="text-[#5c52fc]"> real progress</span>
+                </h1>
+
+                {/* Subheading */}
+                <p className="text-gray-500 text-lg max-w-xl">
+                    Devflow helps you organize projects, track tasks, and
+                    collaborate with your team - all in one place.
+                </p>
+
+                {/* Buttons */}
+                <div className="flex gap-4">
+                    <Button>Get Started</Button>
+                    <Button variant="outline">Learn More</Button>
+                </div>
+            </section>
+
+            {/* Right side */}
+            <div className="w-1/2 flex items-center justify-center p-16">
                 <img
                     src="/v-placeholder.png"
-                    alt="Devflow placeholder"
-                    className="absolute inset-0 h-full w-full object-cover"
+                    alt="Devflow"
+                    className="w-full h-full object-contain"
                 />
             </div>
-        </section>
+
+        </div>
     );
 }
