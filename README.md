@@ -1,5 +1,4 @@
-# <Project Name>
-
+# Devflow
 > Replace every angle-bracket placeholder below. The hygiene check in CI will
 > fail until you do.
 
@@ -30,7 +29,7 @@ make run
 
 ## Live URL
 
-<Add once M5 is done. Until then, leave as is.>
+Not available yet. Deployment will be added in M5.
 
 ## Health endpoint
 
