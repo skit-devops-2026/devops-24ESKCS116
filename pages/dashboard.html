@@ -1,14 +1,334 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    
 
-    <!-- hero -->
+    <title>Taskly Dashboard</title>
+
+    <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+</head>
+
+<body class="bg-gray-100">
+
+    <div class="flex">
+
+        <!-- sidebar -->
+        <aside class="bg-blue-950 text-white w-56 h-screen p-5">
+
+            <h2 class="text-xl font-bold mb-8">
+                Taskly
+            </h2>
+
+            <nav class="flex flex-col gap-2">
+
+                <a href="#" class="p-3 rounded">
+                    Dashboard
+                </a>
+
+                <a href="#" class="p-3">
+                    Projects
+                </a>
+
+                <a href="#" class="p-3">
+                    Team
+                </a>
+
+                <a href="#" class="p-3">
+                    Settings
+                </a>
+
+            </nav>
+
+        </aside>
+
+
+        <!-- main content -->
+        <section class="w-full p-5">
+
+            <!-- navbar -->
+            <div class="bg-white p-3 flex justify-between items-center">
+
+                <div>
+                    Menu
+                </div>
+
+                <input
+                    type="text"
+                    placeholder="Search anything..."
+                    class="bg-gray-100 p-2 rounded w-80"
+                >
+
+                <div>
+                    D
+                </div>
+
+            </div>
+
+
+            <!-- welcome section -->
+            <div class="bg-blue-100 p-5 mt-5 rounded flex justify-between">
+
+                <div>
+
+                    <h1 class="text-2xl font-bold">
+                        Welcome back, Divyanshi!
+                    </h1>
+
+                    <p class="text-gray-500 mt-1">
+                        Here's what's happening with your projects today.
+                    </p>
+
+                </div>
+
+                <div class="text-gray-600">
+                    Good Work<br>
+                    Matters
+                </div>
+
+            </div>
+
+
+            <!-- stats -->
+            <div class="grid grid-cols-4 gap-4 mt-5">
+
+
+                <!-- total tasks -->
+                <div class="bg-white p-5 rounded flex justify-between">
+
+                    <div>
+
+                        <h2 class="text-2xl font-bold">
+                            24
+                        </h2>
+
+                        <p class="text-gray-500 text-sm">
+                            Total Tasks
+                        </p>
+
+                    </div>
+
+                    <div class="bg-blue-100 p-3 rounded">
+                        Tasks
+                    </div>
+
+                </div>
+
+
+                <!-- projects -->
+                <div class="bg-white p-5 rounded flex justify-between">
+
+                    <div>
+
+                        <h2 class="text-2xl font-bold">
+                            6
+                        </h2>
+
+                        <p class="text-gray-500 text-sm">
+                            Projects
+                        </p>
+
+                    </div>
+
+                    <div class="bg-blue-100 p-3 rounded">
+                        Projects
+                    </div>
+
+                </div>
+
+
+                <!-- in progress -->
+                <div class="bg-white p-5 rounded flex justify-between">
+
+                    <div>
+
+                        <h2 class="text-2xl font-bold">
+                            4
+                        </h2>
+
+                        <p class="text-gray-500 text-sm">
+                            In Progress
+                        </p>
+
+                    </div>
+
+                    <div class="bg-yellow-100 p-3 rounded">
+                        Progress
+                    </div>
+
+                </div>
+
+
+                <!-- completed -->
+                <div class="bg-white p-5 rounded flex justify-between">
+
+                    <div>
+
+                        <h2 class="text-2xl font-bold">
+                            16
+                        </h2>
+
+                        <p class="text-gray-500 text-sm">
+                            Completed
+                        </p>
+
+                    </div>
+
+                    <div class="bg-green-100 p-3 rounded">
+                        Done
+                    </div>
+
+                </div>
+
+            </div>
+
+
+            <!-- bottom section -->
+            <div class="grid grid-cols-3 gap-5 mt-5">
+
+
+                <!-- left section -->
+                <div class="col-span-2">
+
+
+                    <!-- task overview -->
+                    <div class="bg-white p-5 rounded">
+
+                        <div class="flex justify-between items-center">
+
+                            <h2 class="font-bold">
+                                Tasks Overview
+                            </h2>
+
+                            <button class="bg-gray-100 p-2 rounded">
+                                This Month
+                            </button>
+
+                        </div>
+
+
+                        <!-- graph -->
+                        <div class="bg-gray-100 h-64 mt-5 rounded flex justify-center items-center">
+
+                            <p class="text-gray-400">
+                                Graph will be added here
+                            </p>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- recent activity -->
+                    <div class="bg-white p-5 rounded mt-5">
+
+                        <h2 class="font-bold mb-4">
+                            Recent Activity
+                        </h2>
+
+
+                        <div class="flex justify-between border-b p-3">
+
+                            <p>
+                                You created a new project
+                            </p>
+
+                            <p class="text-gray-400 text-sm">
+                                2h ago
+                            </p>
+
+                        </div>
+
+
+                        <div class="flex justify-between border-b p-3">
+
+                            <p>
+                                Riya completed a task
+                            </p>
+
+                            <p class="text-gray-400 text-sm">
+                                4h ago
+                            </p>
+
+                        </div>
+
+
+                        <div class="flex justify-between p-3">
+
+                            <p>
+                                Aman joined the team
+                            </p>
+
+                            <p class="text-gray-400 text-sm">
+                                6h ago
+                            </p>
+
+                        </div>
+
+                    </div>
+
+                </div>
+
+
+                <!-- right section -->
+                <div>
+
+
+                    <!-- quick actions -->
+                    <div class="bg-white p-5 rounded">
+
+                        <h2 class="font-bold mb-4">
+                            Quick Actions
+                        </h2>
+
+
+                        <div class="flex flex-col gap-2">
+
+                            <button class="bg-gray-100 p-3 text-left rounded">
+                                Create New Project
+                            </button>
+
+                            <button class="bg-gray-100 p-3 text-left rounded">
+                                Add New Task
+                            </button>
+
+                            <button class="bg-gray-100 p-3 text-left rounded">
+                                Invite Team Member
+                            </button>
+
+                            <button class="bg-gray-100 p-3 text-left rounded">
+                                View Reports
+                            </button>
+
+                        </div>
+
+                    </div>
+
+
+                    <!-- motivation card -->
+                    <div class="bg-blue-100 p-5 rounded mt-5 h-48">
+
+                        <h2 class="font-bold text-lg">
+                            Small steps,
+                            <br>
+                            big achievements
+                        </h2>
+
+                        <p class="text-gray-500 mt-5">
+                            Keep going!
+                        </p>
+
+                    </div>
+
+                </div>
+
+            </div>
+
+        </section>
+
+    </div>
 
 </body>
+
 </html>
