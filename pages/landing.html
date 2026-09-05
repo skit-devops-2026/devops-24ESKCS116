@@ -15,12 +15,15 @@
 
         <!-- menu -->
         <div class=" flex p-3 gap-16 ">
-            <a href=""></a>
+            <a href="dashboard.html">Dashboard</a>
+            <a href="projects.html">Projects</a>
+            <a href="#team">Team</a>
+            <a href="#analytics">Analytics</a>
         </div>
 
         <!-- login  and get started -->
         <div class='flex px-8 gap-8'>
-            <button class=" flex items-center p-2 rounded-md border-2 px-6 border-blue-50 h-3/4 mt-2">Log in</button>
+            <button onclick="window.location.href='login.html'" class=" flex items-center p-2 rounded-md border-2 px-6 border-blue-50 h-3/4 mt-2">Log in</button>
             <button class=" flex bg-[#5c52fc] p-2 rounded-md border-2 px-6 border-blue-50 h-3/4 mt-2 text-white items-center">Get Started</button>
         </div>
         
@@ -101,7 +104,7 @@
                     <div class='flex justify-start'>
                         <div class='flex justify-center items-center bg-blue-100 rounded-sm size-12'><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M22 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg></div>
                     </div>
-                    <div class='flex justify-start text-2xl'>Work Together</div>
+                    <div id="team" class='flex justify-start text-2xl'>Work Together</div>
                     <div class='flex justify-start text-gray-400 text-sm'>Collaborate with your team seamlessly.</div>
                 </div>
             
@@ -109,7 +112,7 @@
                     <div class='flex justify-start'>
                         <div class='flex justify-center items-center bg-blue-100 rounded-sm size-12'><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><line x1="6" y1="20" x2="6" y2="10"></line><line x1="12" y1="20" x2="12" y2="4"></line><line x1="18" y1="20" x2="18" y2="14"></line></svg></div>
                     </div>
-                    <div class='flex justify-start text-2xl'>Track Progress</div>
+                    <div id="analytics" class='flex justify-start text-2xl'>Track Progress</div>
                     <div class='flex justify-start text-gray-400 text-sm'>Visualise your growth with poerful insights.</div>
                 </div>
             </div>
@@ -133,23 +136,14 @@
                     <div class='text-sm text-gray-500'>Plan today, build tomorrow.</div>
                 </div>
 
-                <div class='flex flex-col gap-1'>
-                    <div class='font-bold text-sm text-left'>Product</div>
-                    <ul class='list-none'>
-                        <li class='text-sm'>Features</li>
-                        <li class='text-sm'>Pricing</li>
-                        <li class='text-sm'>FAQ</li>
-                    </ul>
-                </div>
-
-                <div class='flex flex-col gap-1'>
-                    <div class='font-bold text-sm text-left'>Company</div>
-                    <ul class='list-none'>
-                        <li class='text-sm'>About</li>
-                        <li class='text-sm'>Blog</li>
-                        <li class='text-sm'>Careers</li>
-                    </ul>
-                </div>
+                <nav id="faqs" class='flex flex-col gap-1' aria-label="Footer navigation">
+                    <div class='font-bold text-sm text-left'>Explore</div>
+                    <a class='text-sm' href="dashboard.html">Dashboard</a>
+                    <a class='text-sm' href="projects.html">Projects</a>
+                    <a class='text-sm' href="landing.html#team">Team</a>
+                    <a class='text-sm' href="landing.html#analytics">Analytics</a>
+                    <a class='text-sm' href="landing.html#faqs">FAQs</a>
+                </nav>
 
                 <!-- Stay connected -->
                 <div class='flex flex-col gap-2'>
