@@ -1,0 +1,7 @@
+services:
+  frontend:
+    build: .
+    image: ghcr.io/divyanshijain234-eng/devops-24eskcs116:mt2
+    ports:
+      - "8080:80"
+    restart: unless-stopped
