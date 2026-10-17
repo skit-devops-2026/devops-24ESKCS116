@@ -1,0 +1,20 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: devflow
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: devflow
+  template:
+    metadata:
+      labels:
+        app: devflow
+    spec:
+      containers:
+        - name: devflow
+          image: ghcr.io/divyanshijain234-eng/devops-24eskcs116:mt2
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 80

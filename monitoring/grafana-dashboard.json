@@ -1,0 +1,29 @@
+{
+  "title": "DevFlow Monitoring",
+  "uid": "devflow-monitoring",
+  "schemaVersion": 39,
+  "version": 1,
+  "refresh": "15s",
+  "panels": [
+    {
+      "id": 1,
+      "title": "Prometheus Targets Up",
+      "type": "stat",
+      "gridPos": {"x": 0, "y": 0, "w": 12, "h": 5},
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "targets": [
+        {"expr": "up", "legendFormat": "{{job}}", "refId": "A"}
+      ]
+    },
+    {
+      "id": 2,
+      "title": "Scrape Samples",
+      "type": "timeseries",
+      "gridPos": {"x": 0, "y": 5, "w": 12, "h": 7},
+      "datasource": {"type": "prometheus", "uid": "prometheus"},
+      "targets": [
+        {"expr": "scrape_samples_scraped", "legendFormat": "{{job}}", "refId": "A"}
+      ]
+    }
+  ]
+}

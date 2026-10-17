@@ -28,8 +28,7 @@ make run
 ```
 
 ## Live URL
-
-Not available yet. Deployment will be added in M5.
+https://devops-24eskcs116-mt2.onrender.com
 
 ## Health endpoint
 
