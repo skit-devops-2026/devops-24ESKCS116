@@ -5,3 +5,17 @@ scrape_configs:
   - job_name: prometheus
     static_configs:
       - targets: ["prometheus:9090"]
+
+  - job_name: devflow-health
+    metrics_path: /probe
+    params:
+      module: [http_2xx]
+    static_configs:
+      - targets: ["https://devops-24eskcs116-mt2.onrender.com/health"]
+    relabel_configs:
+      - source_labels: [__address__]
+        target_label: __param_target
+      - source_labels: [__param_target]
+        target_label: instance
+      - target_label: __address__
+        replacement: blackbox-exporter:9115

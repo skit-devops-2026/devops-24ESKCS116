@@ -19,3 +19,9 @@ services:
     ports:
       - "3000:3000"
     restart: unless-stopped
+
+  blackbox-exporter:
+    image: prom/blackbox-exporter:latest
+    ports:
+      - "9115:9115"
+    restart: unless-stopped
