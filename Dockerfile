@@ -1,4 +1,5 @@
 FROM nginx:alpine
+LABEL org.opencontainers.image.source="https://github.com/skit-devops-2026/devops-24ESKCS116"
 
 ARG GIT_COMMIT=unknown
 
