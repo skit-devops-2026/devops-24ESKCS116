@@ -1,0 +1,16 @@
+{
+  "name": "devflow",
+  "version": "0.1.0",
+  "description": "Minimal Node.js/Express server for DevFlow static frontend",
+  "main": "server.js",
+  "scripts": {
+    "start": "node server.js"
+  },
+  "author": "",
+  "license": "MIT",
+  "dependencies": {
+    "bcryptjs": "^3.0.3",
+    "express": "^5.3.0",
+    "jsonwebtoken": "^9.0.3"
+  }
+}
