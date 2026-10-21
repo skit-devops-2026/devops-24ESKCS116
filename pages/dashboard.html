@@ -5,320 +5,230 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
-    <title>Taskly Dashboard</title>
+    <title>Devflow Dashboard</title>
 
     <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
 </head>
 
-<body class="bg-gray-100">
+<body class="bg-gray-100 dashboard">
 
-    <div class="flex">
+    <div class="flex min-h-screen">
 
         <!-- sidebar -->
-        <aside class="bg-blue-950 text-white w-56 h-screen p-5">
-
-            <h2 class="text-xl font-bold mb-8">
-                Devflow
-            </h2>
-
-            <nav class="flex flex-col gap-2">
-
-                <a href="#" class="p-3 rounded">
-                    Dashboard
+        <aside class="bg-blue-950 text-white w-56 min-h-screen p-5 flex flex-col justify-between">
+            <div>
+                <a href="../index.html" class="text-xl font-bold mb-8 block hover:text-blue-200">
+                    Devflow
                 </a>
 
-                <a href="#" class="p-3">
-                    Projects
-                </a>
+                <nav class="flex flex-col gap-2">
+                    <a href="dashboard.html" class="p-3 bg-blue-900 rounded font-medium">
+                        Dashboard
+                    </a>
 
-                <a href="#" class="p-3">
-                    Team
-                </a>
+                    <a href="#projectsSection" class="p-3 hover:bg-blue-900/50 rounded transition">
+                        Projects
+                    </a>
 
-                <a href="#" class="p-3">
-                    Settings
-                </a>
+                    <a href="../index.html" class="p-3 hover:bg-blue-900/50 rounded transition">
+                        Home
+                    </a>
+                </nav>
+            </div>
 
-            </nav>
-
+            <div>
+                <button id="logoutBtn" class="w-full p-3 text-left text-red-300 hover:text-red-100 hover:bg-blue-900/50 rounded transition font-medium flex items-center justify-between">
+                    <span>Logout</span>
+                    <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 16l4-4m0 0l-4-4m4 4H7m6 4v1a3 3 0 01-3 3H6a3 3 0 01-3-3V7a3 3 0 013-3h4a3 3 0 013 3v1"/></svg>
+                </button>
+            </div>
         </aside>
-
 
         <!-- main content -->
         <section class="w-full p-5">
 
             <!-- navbar -->
-            <div class="bg-white p-3 flex justify-between items-center">
+            <div class="bg-white p-3 rounded flex justify-between items-center shadow-xs">
 
-                <div>
-                    Menu
+                <div class="font-bold text-gray-700">
+                    Workspace
                 </div>
 
                 <input
                     type="text"
                     placeholder="Search anything..."
-                    class="bg-gray-100 p-2 rounded w-80"
+                    class="bg-gray-100 p-2 rounded w-80 text-sm focus:outline-none focus:ring-1 focus:ring-blue-500"
                 >
 
-                <div>
+                <div class="w-8 h-8 rounded-full bg-blue-600 text-white flex items-center justify-center font-bold text-sm">
                     D
                 </div>
 
             </div>
 
-
             <!-- welcome section -->
-            <div class="bg-blue-100 p-5 mt-5 rounded flex justify-between">
+            <div class="bg-blue-100 p-5 mt-5 rounded flex justify-between items-center">
 
                 <div>
-
-                    <h1 class="text-2xl font-bold">
-                        Welcome back, Divyanshi!
+                    <h1 class="text-2xl font-bold text-blue-950">
+                        Welcome to Devflow!
                     </h1>
 
-                    <p class="text-gray-500 mt-1">
-                        Here's what's happening with your projects today.
+                    <p class="text-gray-600 mt-1 text-sm">
+                        Here's what's happening with your workspace today.
                     </p>
-
                 </div>
 
-                <div class="text-gray-600">
+                <div class="text-blue-900 font-semibold text-right text-sm">
                     Good Work<br>
                     Matters
                 </div>
 
             </div>
 
-
             <!-- stats -->
             <div class="grid grid-cols-4 gap-4 mt-5">
 
-
                 <!-- total tasks -->
-                <div class="bg-white p-5 rounded flex justify-between">
-
+                <div class="bg-white p-5 rounded flex justify-between items-center shadow-xs">
                     <div>
-
-                        <h2 class="text-2xl font-bold">
-                            24
-                        </h2>
-
-                        <p class="text-gray-500 text-sm">
-                            Total Tasks
-                        </p>
-
+                        <h2 class="text-2xl font-bold">24</h2>
+                        <p class="text-gray-500 text-sm">Total Tasks</p>
                     </div>
-
-                    <div class="bg-blue-100 p-3 rounded">
+                    <div class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-1.5 rounded">
                         Tasks
                     </div>
-
                 </div>
-
 
                 <!-- projects -->
-                <div class="bg-white p-5 rounded flex justify-between">
-
+                <div class="bg-white p-5 rounded flex justify-between items-center shadow-xs">
                     <div>
-
-                        <h2 class="text-2xl font-bold">
-                            6
-                        </h2>
-
-                        <p class="text-gray-500 text-sm">
-                            Projects
-                        </p>
-
+                        <h2 class="text-2xl font-bold">6</h2>
+                        <p class="text-gray-500 text-sm">Projects</p>
                     </div>
-
-                    <div class="bg-blue-100 p-3 rounded">
+                    <div class="bg-blue-100 text-blue-800 text-xs font-semibold px-2.5 py-1.5 rounded">
                         Projects
                     </div>
-
                 </div>
-
 
                 <!-- in progress -->
-                <div class="bg-white p-5 rounded flex justify-between">
-
+                <div class="bg-white p-5 rounded flex justify-between items-center shadow-xs">
                     <div>
-
-                        <h2 class="text-2xl font-bold">
-                            4
-                        </h2>
-
-                        <p class="text-gray-500 text-sm">
-                            In Progress
-                        </p>
-
+                        <h2 class="text-2xl font-bold">4</h2>
+                        <p class="text-gray-500 text-sm">In Progress</p>
                     </div>
-
-                    <div class="bg-yellow-100 p-3 rounded">
+                    <div class="bg-yellow-100 text-yellow-800 text-xs font-semibold px-2.5 py-1.5 rounded">
                         Progress
                     </div>
-
                 </div>
 
-
                 <!-- completed -->
-                <div class="bg-white p-5 rounded flex justify-between">
-
+                <div class="bg-white p-5 rounded flex justify-between items-center shadow-xs">
                     <div>
-
-                        <h2 class="text-2xl font-bold">
-                            16
-                        </h2>
-
-                        <p class="text-gray-500 text-sm">
-                            Completed
-                        </p>
-
+                        <h2 class="text-2xl font-bold">16</h2>
+                        <p class="text-gray-500 text-sm">Completed</p>
                     </div>
-
-                    <div class="bg-green-100 p-3 rounded">
+                    <div class="bg-green-100 text-green-800 text-xs font-semibold px-2.5 py-1.5 rounded">
                         Done
                     </div>
-
                 </div>
 
             </div>
 
-
             <!-- bottom section -->
             <div class="grid grid-cols-3 gap-5 mt-5">
 
-
                 <!-- left section -->
-                <div class="col-span-2">
+                <div class="col-span-2 flex flex-col gap-5">
 
-
-                    <!-- task overview -->
-                    <div class="bg-white p-5 rounded">
-
-                        <div class="flex justify-between items-center">
-
-                            <h2 class="font-bold">
-                                Tasks Overview
-                            </h2>
-
-                            <button class="bg-gray-100 p-2 rounded">
-                                This Month
-                            </button>
-
+                    <!-- Projects & Tasks manager -->
+                    <div id="projectsSection" class="bg-white p-5 rounded shadow-xs">
+                        <div class="flex justify-between items-center mb-4">
+                            <div>
+                                <h2 class="font-bold text-lg text-gray-800">Projects & Tasks</h2>
+                                <p class="text-xs text-gray-500">Manage your active projects and project tasks</p>
+                            </div>
                         </div>
 
-
-                        <!-- graph -->
-                        <div class="bg-gray-100 h-64 mt-5 rounded flex justify-center items-center">
-
-                            <p class="text-gray-400">
-                                Graph will be added here
-                            </p>
-
+                        <!-- dynamic project list container -->
+                        <div id="projectList" class="flex flex-col">
+                            <p class="text-gray-400 text-sm p-3">Loading projects...</p>
                         </div>
-
                     </div>
 
+                    <!-- task overview -->
+                    <div class="bg-white p-5 rounded shadow-xs">
+                        <div class="flex justify-between items-center">
+                            <h2 class="font-bold">Tasks Overview</h2>
+                            <button class="bg-gray-100 text-xs font-semibold p-2 rounded text-gray-600">This Month</button>
+                        </div>
+
+                        <!-- graph placeholder -->
+                        <div class="bg-gray-100 h-48 mt-4 rounded flex justify-center items-center">
+                            <p class="text-gray-400 text-sm">Task activity chart</p>
+                        </div>
+                    </div>
 
                     <!-- recent activity -->
-                    <div class="bg-white p-5 rounded mt-5">
+                    <div class="bg-white p-5 rounded shadow-xs">
+                        <h2 class="font-bold mb-4">Recent Activity</h2>
 
-                        <h2 class="font-bold mb-4">
-                            Recent Activity
-                        </h2>
-
-
-                        <div class="flex justify-between border-b p-3">
-
-                            <p>
-                                You created a new project
-                            </p>
-
-                            <p class="text-gray-400 text-sm">
-                                2h ago
-                            </p>
-
+                        <div class="flex justify-between border-b border-gray-100 p-3">
+                            <p class="text-sm">You created a new project</p>
+                            <p class="text-gray-400 text-xs">2h ago</p>
                         </div>
 
-
-                        <div class="flex justify-between border-b p-3">
-
-                            <p>
-                                Riya completed a task
-                            </p>
-
-                            <p class="text-gray-400 text-sm">
-                                4h ago
-                            </p>
-
+                        <div class="flex justify-between border-b border-gray-100 p-3">
+                            <p class="text-sm">Riya completed a task</p>
+                            <p class="text-gray-400 text-xs">4h ago</p>
                         </div>
-
 
                         <div class="flex justify-between p-3">
-
-                            <p>
-                                Aman joined the team
-                            </p>
-
-                            <p class="text-gray-400 text-sm">
-                                6h ago
-                            </p>
-
+                            <p class="text-sm">Aman joined the team</p>
+                            <p class="text-gray-400 text-xs">6h ago</p>
                         </div>
-
                     </div>
 
                 </div>
 
-
                 <!-- right section -->
                 <div>
 
-
                     <!-- quick actions -->
-                    <div class="bg-white p-5 rounded">
-
-                        <h2 class="font-bold mb-4">
-                            Quick Actions
-                        </h2>
-
+                    <div class="bg-white p-5 rounded shadow-xs">
+                        <h2 class="font-bold mb-4">Quick Actions</h2>
 
                         <div class="flex flex-col gap-2">
-
-                            <button class="bg-gray-100 p-3 text-left rounded">
-                                Create New Project
+                            <button id="createProjectBtn" class="bg-blue-50 text-blue-700 hover:bg-blue-100 p-3 text-left rounded font-medium transition text-sm flex justify-between items-center">
+                                <span>Create New Project</span>
+                                <span>+</span>
                             </button>
 
-                            <button class="bg-gray-100 p-3 text-left rounded">
-                                Add New Task
+                            <button id="addTaskBtn" class="bg-gray-100 hover:bg-gray-200 text-gray-800 p-3 text-left rounded font-medium transition text-sm flex justify-between items-center">
+                                <span>Add New Task</span>
+                                <span>+</span>
                             </button>
 
-                            <button class="bg-gray-100 p-3 text-left rounded">
+                            <button class="bg-gray-50 text-gray-500 p-3 text-left rounded text-sm cursor-not-allowed">
                                 Invite Team Member
                             </button>
 
-                            <button class="bg-gray-100 p-3 text-left rounded">
+                            <button class="bg-gray-50 text-gray-500 p-3 text-left rounded text-sm cursor-not-allowed">
                                 View Reports
                             </button>
-
                         </div>
-
                     </div>
 
-
                     <!-- motivation card -->
-                    <div class="bg-blue-100 p-5 rounded mt-5 h-48">
-
-                        <h2 class="font-bold text-lg">
-                            Small steps,
-                            <br>
+                    <div class="bg-blue-100 p-5 rounded mt-5 h-48 flex flex-col justify-between">
+                        <h2 class="font-bold text-lg text-blue-950">
+                            Small steps,<br>
                             big achievements
                         </h2>
 
-                        <p class="text-gray-500 mt-5">
+                        <p class="text-blue-800 text-sm font-medium">
                             Keep going!
                         </p>
-
                     </div>
 
                 </div>
@@ -329,6 +239,8 @@
 
     </div>
 
+    <script type="module" src="../js/auth.js"></script>
+    <script type="module" src="../js/main.js"></script>
 </body>
 
 </html>
