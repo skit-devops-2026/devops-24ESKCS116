@@ -2,20 +2,27 @@ const express = require('express');
 const path = require('path');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
+const mongoose = require('mongoose');
+const User = require('./models/User');
+const Project = require('./models/Project');
+const Task = require('./models/Task');
+// Connect to MongoDB
+mongoose.connect('mongodb://127.0.0.1:27017/devflow', {
+  useNewUrlParser: true,
+  useUnifiedTopology: true
+}).then(() => console.log('MongoDB connected'))
+  .catch(err => { console.error('MongoDB connection error:', err); process.exit(1); });
 
 const app = express();
 const PORT = process.env.PORT || 3000;
-
 // Enforce JWT_SECRET requirement with safe local dev fallback
-const JWT_SECRET = process.env.JWT_SECRET || 'devflow-default-jwt-secret-key-2026';
 if (!process.env.JWT_SECRET) {
-  console.warn('Notice: JWT_SECRET environment variable was not set. Using default development secret.');
+  console.error('Fatal: JWT_SECRET environment variable is required but not set.');
+  process.exit(1);
 }
+const JWT_SECRET = process.env.JWT_SECRET;
 
-// In-memory data store
-const users = [];
-const projects = [];
-const tasks = [];
+// In-memory data store removed – using MongoDB via Mongoose
 
 // Lightweight in-memory rate limiter for auth routes (15 attempts per 15 minutes)
 const authAttempts = new Map();
@@ -105,13 +112,14 @@ app.post('/api/auth/signup', authRateLimiter, async (req, res) => {
   }
 
   const normalizedEmail = email.trim().toLowerCase();
-  const existing = users.find((u) => u.email === normalizedEmail);
+  const existing = await User.findOne({ email: normalizedEmail });
   if (existing) {
     return res.status(409).json({ error: 'Email already registered' });
   }
 
   const passwordHash = await bcrypt.hash(password, 10);
-  users.push({ name: name.trim(), email: normalizedEmail, passwordHash });
+  const newUser = new User({ name: name.trim(), email: normalizedEmail, passwordHash });
+  await newUser.save();
   res.status(201).json({ success: true, message: 'User created' });
 });
 
@@ -127,7 +135,7 @@ app.post('/api/auth/login', authRateLimiter, async (req, res) => {
   }
 
   const normalizedEmail = email.trim().toLowerCase();
-  const user = users.find((u) => u.email === normalizedEmail);
+  const user = await User.findOne({ email: normalizedEmail });
   if (!user) {
     return res.status(401).json({ error: 'Invalid credentials' });
   }
@@ -143,77 +151,65 @@ app.post('/api/auth/login', authRateLimiter, async (req, res) => {
 
 // ------ Project routes ------
 
-app.post('/api/projects', authenticate, (req, res) => {
+app.post('/api/projects', authenticate, async (req, res) => {
   const { name, description } = req.body;
   if (!name || typeof name !== 'string' || !name.trim()) {
     return res.status(400).json({ error: 'Project name is required' });
   }
-
-  const id = Date.now().toString() + '-' + Math.random().toString(36).substring(2, 7);
-  const project = {
-    id,
+  const project = new Project({
     userEmail: req.user.email,
     name: name.trim(),
-    description: typeof description === 'string' ? description.trim() : '',
-  };
-  projects.push(project);
+    description: typeof description === 'string' ? description.trim() : ''
+  });
+  await project.save();
   res.status(201).json(project);
 });
 
-app.get('/api/projects', authenticate, (req, res) => {
-  const userProjects = projects.filter((p) => p.userEmail === req.user.email);
+app.get('/api/projects', authenticate, async (req, res) => {
+  const userProjects = await Project.find({ userEmail: req.user.email }).lean();
   res.json(userProjects);
 });
 
-app.put('/api/projects/:id', authenticate, (req, res) => {
+app.put('/api/projects/:id', authenticate, async (req, res) => {
   const { id } = req.params;
-  const proj = projects.find((p) => String(p.id) === String(id) && p.userEmail === req.user.email);
-  if (!proj) {
-    return res.status(404).json({ error: 'Project not found' });
-  }
-
   const { name, description } = req.body;
+  const update = {};
   if (name !== undefined) {
     if (typeof name !== 'string' || !name.trim()) {
       return res.status(400).json({ error: 'Valid project name is required' });
     }
-    proj.name = name.trim();
+    update.name = name.trim();
   }
   if (description !== undefined) {
-    proj.description = typeof description === 'string' ? description.trim() : '';
+    update.description = typeof description === 'string' ? description.trim() : '';
+  }
+  const proj = await Project.findOneAndUpdate({ _id: id, userEmail: req.user.email }, update, { new: true });
+  if (!proj) {
+    return res.status(404).json({ error: 'Project not found' });
   }
   res.json(proj);
 });
 
-app.delete('/api/projects/:id', authenticate, (req, res) => {
+app.delete('/api/projects/:id', authenticate, async (req, res) => {
   const { id } = req.params;
-  const index = projects.findIndex((p) => String(p.id) === String(id) && p.userEmail === req.user.email);
-  if (index === -1) {
+  const proj = await Project.findOneAndDelete({ _id: id, userEmail: req.user.email });
+  if (!proj) {
     return res.status(404).json({ error: 'Project not found' });
   }
-
-  // Delete project
-  projects.splice(index, 1);
-
-  // Cascade delete associated tasks
-  for (let i = tasks.length - 1; i >= 0; i--) {
-    if (String(tasks[i].projectId) === String(id) && tasks[i].userEmail === req.user.email) {
-      tasks.splice(i, 1);
-    }
-  }
-
+  // Cascade delete tasks linked to this project for this user
+  await Task.deleteMany({ projectId: id, userEmail: req.user.email });
   res.status(204).send();
 });
 
 // ------ Task routes ------
 
-app.post('/api/tasks', authenticate, (req, res) => {
+app.post('/api/tasks', authenticate, async (req, res) => {
   const { projectId, title, description, status, priority } = req.body;
   if (!projectId || !title || typeof title !== 'string' || !title.trim()) {
     return res.status(400).json({ error: 'projectId and title are required' });
   }
 
-  const project = projects.find((p) => String(p.id) === String(projectId) && p.userEmail === req.user.email);
+  const project = await Project.findOne({ _id: projectId, userEmail: req.user.email });
   if (!project) {
     return res.status(404).json({ error: 'Project not found' });
   }
@@ -228,36 +224,30 @@ app.post('/api/tasks', authenticate, (req, res) => {
     return res.status(400).json({ error: 'Invalid priority' });
   }
 
-  const id = Date.now().toString() + '-' + Math.random().toString(36).substring(2, 7);
-  const task = {
-    id,
-    projectId: String(projectId),
+  const task = new Task({
+    projectId,
     userEmail: req.user.email,
     title: title.trim(),
     description: typeof description === 'string' ? description.trim() : '',
     status: status || 'To Do',
-    priority: priority || 'Medium',
-  };
-  tasks.push(task);
+    priority: priority || 'Medium'
+  });
+  await task.save();
   res.status(201).json(task);
 });
 
-app.get('/api/tasks', authenticate, (req, res) => {
+app.get('/api/tasks', authenticate, async (req, res) => {
   const { projectId } = req.query;
-  let userTasks = tasks.filter((t) => t.userEmail === req.user.email);
+  const filter = { userEmail: req.user.email };
   if (projectId) {
-    userTasks = userTasks.filter((t) => String(t.projectId) === String(projectId));
+    filter.projectId = projectId;
   }
+  const userTasks = await Task.find(filter).lean();
   res.json(userTasks);
 });
 
-app.put('/api/tasks/:id', authenticate, (req, res) => {
+app.put('/api/tasks/:id', authenticate, async (req, res) => {
   const { id } = req.params;
-  const task = tasks.find((t) => String(t.id) === String(id) && t.userEmail === req.user.email);
-  if (!task) {
-    return res.status(404).json({ error: 'Task not found' });
-  }
-
   const { title, description, status, priority } = req.body;
   const validStatuses = ['To Do', 'In Progress', 'Done'];
   const validPriorities = ['Low', 'Medium', 'High'];
@@ -269,28 +259,32 @@ app.put('/api/tasks/:id', authenticate, (req, res) => {
     return res.status(400).json({ error: 'Invalid priority' });
   }
 
+  const update = {};
   if (title !== undefined) {
     if (typeof title !== 'string' || !title.trim()) {
       return res.status(400).json({ error: 'Valid title is required' });
     }
-    task.title = title.trim();
+    update.title = title.trim();
   }
   if (description !== undefined) {
-    task.description = typeof description === 'string' ? description.trim() : '';
+    update.description = typeof description === 'string' ? description.trim() : '';
   }
-  if (status !== undefined) task.status = status;
-  if (priority !== undefined) task.priority = priority;
+  if (status !== undefined) update.status = status;
+  if (priority !== undefined) update.priority = priority;
 
+  const task = await Task.findOneAndUpdate({ _id: id, userEmail: req.user.email }, update, { new: true });
+  if (!task) {
+    return res.status(404).json({ error: 'Task not found' });
+  }
   res.json(task);
 });
 
-app.delete('/api/tasks/:id', authenticate, (req, res) => {
+app.delete('/api/tasks/:id', authenticate, async (req, res) => {
   const { id } = req.params;
-  const index = tasks.findIndex((t) => String(t.id) === String(id) && t.userEmail === req.user.email);
-  if (index === -1) {
+  const result = await Task.deleteOne({ _id: id, userEmail: req.user.email });
+  if (result.deletedCount === 0) {
     return res.status(404).json({ error: 'Task not found' });
   }
-  tasks.splice(index, 1);
   res.status(204).send();
 });
 
