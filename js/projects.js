@@ -1,10 +1,14 @@
-import { API, headers } from './auth.js';
+import { API, headers, logout } from './auth.js';
 
 export async function getProjects() {
   try {
     const res = await fetch(`${API}/projects`, {
       headers: headers(),
     });
+    if (res.status === 401) {
+      logout();
+      return [];
+    }
     if (!res.ok) return [];
     return await res.json();
   } catch (err) {

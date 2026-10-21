@@ -1,4 +1,4 @@
-import { API, headers } from './auth.js';
+import { API, headers, logout } from './auth.js';
 
 export async function getTasks(projectId) {
   try {
@@ -8,6 +8,10 @@ export async function getTasks(projectId) {
     const res = await fetch(url, {
       headers: headers(),
     });
+    if (res.status === 401) {
+      logout();
+      return [];
+    }
     if (!res.ok) return [];
     return await res.json();
   } catch (err) {

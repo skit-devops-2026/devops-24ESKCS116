@@ -52,6 +52,25 @@ export async function login(data) {
   }
 }
 
+export function getUser() {
+  const token = getToken();
+  if (!token) return null;
+  try {
+    const parts = token.split('.');
+    if (parts.length < 2) return null;
+    const base64 = parts[1].replace(/-/g, '+').replace(/_/g, '/');
+    const jsonStr = decodeURIComponent(
+      atob(base64)
+        .split('')
+        .map((c) => '%' + ('00' + c.charCodeAt(0).toString(16)).slice(-2))
+        .join('')
+    );
+    return JSON.parse(jsonStr);
+  } catch (err) {
+    return null;
+  }
+}
+
 export function logout() {
   clearToken();
   const currentPath = window.location.pathname;

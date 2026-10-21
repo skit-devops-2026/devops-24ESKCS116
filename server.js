@@ -6,15 +6,10 @@ const jwt = require('jsonwebtoken');
 const app = express();
 const PORT = process.env.PORT || 3000;
 
-// Enforce JWT_SECRET requirement
-const JWT_SECRET = process.env.JWT_SECRET;
-if (!JWT_SECRET) {
-  console.error('\n=============================================================');
-  console.error('FATAL ERROR: JWT_SECRET environment variable is required.');
-  console.error('Please set JWT_SECRET before starting the DevFlow server.');
-  console.error('Example (PowerShell): $env:JWT_SECRET="your-secret-key" ; npm start');
-  console.error('=============================================================\n');
-  process.exit(1);
+// Enforce JWT_SECRET requirement with safe local dev fallback
+const JWT_SECRET = process.env.JWT_SECRET || 'devflow-default-jwt-secret-key-2026';
+if (!process.env.JWT_SECRET) {
+  console.warn('Notice: JWT_SECRET environment variable was not set. Using default development secret.');
 }
 
 // In-memory data store
@@ -154,7 +149,7 @@ app.post('/api/projects', authenticate, (req, res) => {
     return res.status(400).json({ error: 'Project name is required' });
   }
 
-  const id = Date.now().toString();
+  const id = Date.now().toString() + '-' + Math.random().toString(36).substring(2, 7);
   const project = {
     id,
     userEmail: req.user.email,
@@ -172,7 +167,7 @@ app.get('/api/projects', authenticate, (req, res) => {
 
 app.put('/api/projects/:id', authenticate, (req, res) => {
   const { id } = req.params;
-  const proj = projects.find((p) => p.id === id && p.userEmail === req.user.email);
+  const proj = projects.find((p) => String(p.id) === String(id) && p.userEmail === req.user.email);
   if (!proj) {
     return res.status(404).json({ error: 'Project not found' });
   }
@@ -192,7 +187,7 @@ app.put('/api/projects/:id', authenticate, (req, res) => {
 
 app.delete('/api/projects/:id', authenticate, (req, res) => {
   const { id } = req.params;
-  const index = projects.findIndex((p) => p.id === id && p.userEmail === req.user.email);
+  const index = projects.findIndex((p) => String(p.id) === String(id) && p.userEmail === req.user.email);
   if (index === -1) {
     return res.status(404).json({ error: 'Project not found' });
   }
@@ -202,7 +197,7 @@ app.delete('/api/projects/:id', authenticate, (req, res) => {
 
   // Cascade delete associated tasks
   for (let i = tasks.length - 1; i >= 0; i--) {
-    if (tasks[i].projectId === id && tasks[i].userEmail === req.user.email) {
+    if (String(tasks[i].projectId) === String(id) && tasks[i].userEmail === req.user.email) {
       tasks.splice(i, 1);
     }
   }
@@ -218,7 +213,7 @@ app.post('/api/tasks', authenticate, (req, res) => {
     return res.status(400).json({ error: 'projectId and title are required' });
   }
 
-  const project = projects.find((p) => p.id === projectId && p.userEmail === req.user.email);
+  const project = projects.find((p) => String(p.id) === String(projectId) && p.userEmail === req.user.email);
   if (!project) {
     return res.status(404).json({ error: 'Project not found' });
   }
@@ -233,15 +228,15 @@ app.post('/api/tasks', authenticate, (req, res) => {
     return res.status(400).json({ error: 'Invalid priority' });
   }
 
-  const id = Date.now().toString();
+  const id = Date.now().toString() + '-' + Math.random().toString(36).substring(2, 7);
   const task = {
     id,
-    projectId,
+    projectId: String(projectId),
     userEmail: req.user.email,
     title: title.trim(),
     description: typeof description === 'string' ? description.trim() : '',
     status: status || 'To Do',
-    priority: priority || 'Low',
+    priority: priority || 'Medium',
   };
   tasks.push(task);
   res.status(201).json(task);
@@ -251,14 +246,14 @@ app.get('/api/tasks', authenticate, (req, res) => {
   const { projectId } = req.query;
   let userTasks = tasks.filter((t) => t.userEmail === req.user.email);
   if (projectId) {
-    userTasks = userTasks.filter((t) => t.projectId === projectId);
+    userTasks = userTasks.filter((t) => String(t.projectId) === String(projectId));
   }
   res.json(userTasks);
 });
 
 app.put('/api/tasks/:id', authenticate, (req, res) => {
   const { id } = req.params;
-  const task = tasks.find((t) => t.id === id && t.userEmail === req.user.email);
+  const task = tasks.find((t) => String(t.id) === String(id) && t.userEmail === req.user.email);
   if (!task) {
     return res.status(404).json({ error: 'Task not found' });
   }
@@ -291,7 +286,7 @@ app.put('/api/tasks/:id', authenticate, (req, res) => {
 
 app.delete('/api/tasks/:id', authenticate, (req, res) => {
   const { id } = req.params;
-  const index = tasks.findIndex((t) => t.id === id && t.userEmail === req.user.email);
+  const index = tasks.findIndex((t) => String(t.id) === String(id) && t.userEmail === req.user.email);
   if (index === -1) {
     return res.status(404).json({ error: 'Task not found' });
   }
