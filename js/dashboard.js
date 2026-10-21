@@ -42,6 +42,29 @@ document.addEventListener('DOMContentLoaded', () => {
     setText(statCompletedTasks, tasks.filter(t => t.status === 'Done').length);
   };
 
+// Activity log
+let activityLog = [];
+const recentActivityList = document.getElementById('recentActivityList');
+const renderRecentActivity = () => {
+  recentActivityList.innerHTML = '';
+  activityLog.slice().reverse().forEach(msg => {
+    const div = document.createElement('div');
+    div.className = 'flex justify-between border-b border-gray-100 p-3';
+    const p = document.createElement('p');
+    p.className = 'text-sm';
+    p.textContent = msg.text;
+    const time = document.createElement('p');
+    time.className = 'text-gray-400 text-xs';
+    time.textContent = msg.time;
+    div.append(p, time);
+    recentActivityList.appendChild(div);
+  });
+};
+const addActivity = (text) => {
+  activityLog.push({ text, time: new Date().toLocaleTimeString() });
+  renderRecentActivity();
+};
+
   const renderProjects = async () => {
     const projects = await getProjects();
     projectListEl.innerHTML = '';
@@ -79,6 +102,7 @@ document.addEventListener('DOMContentLoaded', () => {
           await deleteProject(p.id);
           await renderProjects();
           await refreshStats();
+          addActivity(`You deleted project "${p.name}"`);
         }
       });
 
@@ -114,6 +138,7 @@ document.addEventListener('DOMContentLoaded', () => {
     taskModal.classList.add('hidden');
   };
 
+  // Load tasks for a project, ensuring a single container and clearing previous contents
   const loadTasks = async (projectId) => {
     const tasks = await getTasks(projectId);
     let taskContainer = document.getElementById('taskList');
@@ -158,6 +183,9 @@ document.addEventListener('DOMContentLoaded', () => {
     });
   };
 
+
+
+
   const openTaskEditModal = (task) => {
     taskFormId.value = task.id;
     taskFormProjectId.value = task.projectId;
@@ -186,6 +214,7 @@ document.addEventListener('DOMContentLoaded', () => {
     const data = { name: projectNameInput.value.trim(), description: projectDescInput.value.trim() };
     if (projectFormId.value) {
       await updateProject(projectFormId.value, data);
+        addActivity(`You updated project "${data.name}"`);
     } else {
       await createProject(data);
     }
@@ -205,8 +234,10 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     if (taskFormId.value) {
       await updateTask(taskFormId.value, data);
+        addActivity(`You updated task "${data.title}"`);
     } else {
       await createTask(data);
+        addActivity(`You added task "${data.title}" to project`);
     }
     closeTaskModal();
     await loadTasks(data.projectId);
@@ -216,4 +247,5 @@ document.addEventListener('DOMContentLoaded', () => {
   // Initial load
   renderProjects();
   refreshStats();
+  renderRecentActivity();
 });
