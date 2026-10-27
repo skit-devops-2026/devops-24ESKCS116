@@ -76,15 +76,21 @@ const addActivity = (text) => {
       nameSpan.className = 'font-medium';
 
       const actionsDiv = document.createElement('div');
-      actionsDiv.className = 'flex gap-2';
+      actionsDiv.className = 'flex items-center gap-3';
+
+      const detailsLink = document.createElement('a');
+      detailsLink.href = `project-details.html?id=${encodeURIComponent(p.id || p._id)}`;
+      detailsLink.textContent = 'Details';
+      detailsLink.className = 'text-indigo-600 hover:underline font-medium text-sm';
+      actionsDiv.appendChild(detailsLink);
 
       const viewBtn = document.createElement('button');
       viewBtn.type = 'button';
       viewBtn.textContent = 'View';
       viewBtn.className = 'text-blue-600 hover:underline';
       viewBtn.addEventListener('click', () => {
-        currentProjectId = p.id;
-        loadTasks(p.id);
+        currentProjectId = p.id || p._id;
+        loadTasks(p.id || p._id);
       });
 
       const editBtn = document.createElement('button');

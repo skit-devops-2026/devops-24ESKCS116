@@ -214,9 +214,10 @@ if (document.body.classList.contains('dashboard') || document.getElementById('pr
       const nameRow = document.createElement('div');
       nameRow.className = 'flex items-center gap-2';
 
-      const nameSpan = document.createElement('span');
-      nameSpan.className = 'font-semibold text-gray-900 text-sm truncate';
+      const nameSpan = document.createElement('a');
+      nameSpan.className = 'font-semibold text-gray-900 text-sm truncate hover:text-indigo-600 cursor-pointer';
       nameSpan.textContent = p.name;
+      nameSpan.href = `project-details.html?id=${encodeURIComponent(p.id || p._id)}`;
       nameRow.appendChild(nameSpan);
 
       if (isSelected) {
@@ -239,6 +240,13 @@ if (document.body.classList.contains('dashboard') || document.getElementById('pr
       const actionsDiv = document.createElement('div');
       actionsDiv.className = 'flex items-center gap-1.5 shrink-0';
 
+      // Project Details Page Link
+      const detailsLink = document.createElement('a');
+      detailsLink.href = `project-details.html?id=${encodeURIComponent(p.id || p._id)}`;
+      detailsLink.className = 'text-xs font-semibold px-2.5 py-1.5 rounded-lg bg-indigo-50 text-indigo-700 hover:bg-indigo-100 transition';
+      detailsLink.textContent = 'Details';
+      actionsDiv.appendChild(detailsLink);
+
       // View Tasks Button
       const viewBtn = document.createElement('button');
       viewBtn.className = `text-xs font-semibold px-3 py-1.5 rounded-lg transition ${
@@ -246,9 +254,9 @@ if (document.body.classList.contains('dashboard') || document.getElementById('pr
       }`;
       viewBtn.textContent = isSelected ? 'Tasks Open' : 'View Tasks';
       viewBtn.addEventListener('click', async () => {
-        selectedProjectId = p.id;
+        selectedProjectId = p.id || p._id;
         await loadProjects();
-        await loadTasks(p.id);
+        await loadTasks(p.id || p._id);
       });
       actionsDiv.appendChild(viewBtn);
 

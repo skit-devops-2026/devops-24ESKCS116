@@ -71,6 +71,14 @@ app.get('/index.html', (req, res) => {
   res.sendFile(path.join(__dirname, 'index.html'));
 });
 
+app.get('/project-details.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'pages', 'project-details.html'));
+});
+
+app.get('/project-details', (req, res) => {
+  res.sendFile(path.join(__dirname, 'pages', 'project-details.html'));
+});
+
 // JWT authentication middleware
 function authenticate(req, res, next) {
   const authHeader = req.headers.authorization;
@@ -167,7 +175,24 @@ app.post('/api/projects', authenticate, async (req, res) => {
 
 app.get('/api/projects', authenticate, async (req, res) => {
   const userProjects = await Project.find({ userEmail: req.user.email }).lean();
-  res.json(userProjects);
+  const normalized = userProjects.map(p => ({
+    ...p,
+    id: p._id.toString()
+  }));
+  res.json(normalized);
+});
+
+app.get('/api/projects/:id', authenticate, async (req, res) => {
+  const { id } = req.params;
+  try {
+    const proj = await Project.findOne({ _id: id, userEmail: req.user.email });
+    if (!proj) {
+      return res.status(404).json({ error: 'Project not found' });
+    }
+    res.json(proj);
+  } catch (err) {
+    return res.status(400).json({ error: 'Invalid project ID' });
+  }
 });
 
 app.put('/api/projects/:id', authenticate, async (req, res) => {

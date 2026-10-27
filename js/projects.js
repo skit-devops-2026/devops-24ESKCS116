@@ -17,6 +17,27 @@ export async function getProjects() {
   }
 }
 
+export async function getProject(id) {
+  try {
+    const res = await fetch(`${API}/projects/${encodeURIComponent(id)}`, {
+      headers: headers(),
+    });
+    if (res.status === 401) {
+      logout();
+      return null;
+    }
+    if (!res.ok) {
+      // Fallback: search in getProjects()
+      const all = await getProjects();
+      return all.find(p => (p.id || p._id) === id) || null;
+    }
+    return await res.json();
+  } catch (err) {
+    console.error('Failed to fetch project:', err);
+    return null;
+  }
+}
+
 export async function createProject(data) {
   try {
     const res = await fetch(`${API}/projects`, {
