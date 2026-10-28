@@ -79,6 +79,22 @@ app.get('/project-details', (req, res) => {
   res.sendFile(path.join(__dirname, 'pages', 'project-details.html'));
 });
 
+app.get('/tasks-page.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'pages', 'tasks-page.html'));
+});
+
+app.get('/tasks-page', (req, res) => {
+  res.sendFile(path.join(__dirname, 'pages', 'tasks-page.html'));
+});
+
+app.get('/tasks.html', (req, res) => {
+  res.sendFile(path.join(__dirname, 'pages', 'tasks-page.html'));
+});
+
+app.get('/tasks', (req, res) => {
+  res.sendFile(path.join(__dirname, 'pages', 'tasks-page.html'));
+});
+
 // JWT authentication middleware
 function authenticate(req, res, next) {
   const authHeader = req.headers.authorization;
